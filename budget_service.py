@@ -15,6 +15,14 @@ from calendar import monthrange
 from budget import Budget
 
 
+class Period:
+
+    def __init__(self, start, end) -> None:
+        super().__init__()
+        self.end = end
+        self.start = start
+
+
 class BudgetService:
     def __init__(self) -> None:
         self.current_v = 0
@@ -44,6 +52,7 @@ class BudgetService:
         return total_amount
 
     def get_overlapping_days(self, budget, start, end):
+        period = Period(start, end)
         temp_start = start
         temp_end = end
         overlapping_start = temp_start if temp_start > budget.first_day() else budget.first_day()
