@@ -35,10 +35,9 @@ class BudgetService:
             current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
             matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
             if len(matched_budgets) > 0:
-                interval_month_budget += matched_budgets[0].amount
+                budget = matched_budgets[0]
+                interval_month_budget += budget.amount
             cur_date = cur_date + monthdelta(1)
-
-        # interval_month_budget = interval_month_budget
 
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
