@@ -3,13 +3,10 @@
 # by天的預算 金額是int
 # 假設一個月 三十萬 查詢一天 回傳一萬
 # 輸入查詢日期(date) 回傳預算
-import datetime
 from datetime import date
 from typing import List
 
 from monthdelta import monthdelta
-# from datetime import date
-# import datetime
 from calendar import monthrange
 
 from budget import Budget
@@ -24,8 +21,6 @@ class BudgetService:
         budgets = self.get_all()
         if end < start:
             return 0
-        start_end_date = date(start.year, start.month + 1, 1) - datetime.timedelta(days=1)
-        end_start_date = date(end.year, end.month, 1)
 
         if start.year == end.year and start.month == end.month:
             return self.query_same_month_range(start, end, budgets)
