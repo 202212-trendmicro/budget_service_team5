@@ -66,5 +66,13 @@ class BudgetServiceTests(unittest.TestCase):
         result = self.b.query(start_date, end_date)
         self.assertEqual(result, 67)
 
+    def test_query_cross_multiple_month_with_empty_middle_budget(self):
+        self.mock_budget = [Budget('202005', 31), Budget('202007', 93)]
+        self.b.get_all = self.fake_budgets
+        start_date = date(2020, 5, 31)
+        end_date = date(2020, 7, 2)
+        result = self.b.query(start_date, end_date)
+        self.assertEqual(result, 1 + 2 * 3)
+
     def fake_budgets(self):
         return self.mock_budget
