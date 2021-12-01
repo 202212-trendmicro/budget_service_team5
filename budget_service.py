@@ -37,18 +37,16 @@ class BudgetService:
             matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
             if len(matched_budgets) > 0:
                 budget = matched_budgets[0]
+                overlapping_start = start if start > budget.first_day() else budget.first_day()
                 if budget.year_month == start.strftime("%Y%m"):
-                    overlapping_start = start
+                    # overlapping_start = start
                     overlapping_end = start_end_date
-                    # total_amount += self.query_same_month_range(overlapping_start, overlapping_end, budgets)
                 elif budget.year_month == end.strftime("%Y%m"):
-                    overlapping_start = end_start_date
+                    # overlapping_start = end_start_date
                     overlapping_end = end
-                    # total_amount += self.query_same_month_range(overlapping_start, overlapping_end, budgets)
                 else:
-                    overlapping_start = budget.first_day()
+                    # overlapping_start = budget.first_day()
                     overlapping_end = budget.last_day()
-                    # total_amount += self.query_same_month_range(overlapping_start, overlapping_end, budgets)
                 total_amount += self.query_same_month_range(overlapping_start, overlapping_end, budgets)
             cur_date = cur_date + monthdelta(1)
 
