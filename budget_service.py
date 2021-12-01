@@ -33,7 +33,8 @@ class BudgetService:
             if len(matched_budgets) > 0:
                 budget = matched_budgets[0]
                 period = Period(start, end)
-                overlapping_days = period.get_overlapping_days(budget)
+                another = Period(budget.first_day(), budget.last_day())
+                overlapping_days = period.get_overlapping_days(budget, another)
                 overlapping_amount = budget.daily_amount() * overlapping_days
                 total_amount += overlapping_amount
             cur_date = cur_date + monthdelta(1)
