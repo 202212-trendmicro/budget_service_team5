@@ -28,7 +28,21 @@ class BudgetService:
             return self.query_same_month_range(start, end, budgets)
 
         start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
-        interval_month_budget = self.get_interval_months(start, end, budgets)
+
+        keys = []
+        cur_date = start + monthdelta(1)
+        lookup = {}
+        for b in budgets:
+            lookup[b.year_month] = b.amount
+        while cur_date < date(end.year, end.month, 1):
+            keys.append(str(cur_date)[0:4] + str(cur_date)[5:7])
+            cur_date = cur_date + monthdelta(1)
+        total = 0
+        for x in keys:
+            if x in lookup:
+                total += lookup[x]
+        interval_month_budget = total
+
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
         return start_month_budget + interval_month_budget + end_date_budget
@@ -50,24 +64,6 @@ class BudgetService:
         print(f"diff: {diff}")
         result = (diff + 1) * self.current_v // days
         return result
-
-    def get_interval_months(self, start, end, budgets):
-        keys = []
-        cur_date = start + monthdelta(1)
-        lookup = {}
-
-        for b in budgets:
-            lookup[b.year_month] = b.amount
-
-        while cur_date < date(end.year, end.month, 1):
-            keys.append(str(cur_date)[0:4] + str(cur_date)[5:7])
-            cur_date = cur_date + monthdelta(1)
-
-        total = 0
-        for x in keys:
-            if x in lookup:
-                total += lookup[x]
-        return total
 
     def get_all(self) -> List[Budget]:
         pass
