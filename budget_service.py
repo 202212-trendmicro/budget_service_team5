@@ -7,7 +7,6 @@ from datetime import date
 from typing import List
 
 from monthdelta import monthdelta
-from calendar import monthrange
 
 from budget import Budget
 from period import Period
@@ -22,9 +21,6 @@ class BudgetService:
         if end < start:
             return 0
 
-        if start.year == end.year and start.month == end.month:
-            return self.query_same_month_range(start, end, budgets)
-
         cur_date = start
         total_amount = 0
         period = Period(start, end)
@@ -37,21 +33,6 @@ class BudgetService:
             cur_date = cur_date + monthdelta(1)
 
         return total_amount
-
-    def query_same_month_range(self, start_date, end_date, budgets):
-        days = -1
-        for budget in budgets:
-            year = str(start_date)[:4]
-            month = str(start_date)[5:7]
-            days = monthrange(int(year), int(month))[1]
-            if year == budget.year_month[:4] and month == budget.year_month[4:6]:
-                self.current_v = budget.amount
-            # get month budget
-        diff = (end_date - start_date).days
-        if days < 0 or diff < 0:
-            return 0
-        result = (diff + 1) * self.current_v // days
-        return result
 
     def get_all(self) -> List[Budget]:
         pass
