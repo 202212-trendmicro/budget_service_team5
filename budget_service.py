@@ -5,7 +5,6 @@
 # 輸入查詢日期(date) 回傳預算
 import datetime
 from datetime import date
-from time import strftime
 from typing import List
 
 from monthdelta import monthdelta
@@ -39,14 +38,11 @@ class BudgetService:
                 budget = matched_budgets[0]
                 overlapping_start = start if start > budget.first_day() else budget.first_day()
                 overlapping_end = end if end < budget.last_day() else budget.last_day()
-                overlapping_amount = self.daily_amount(budget) * ((overlapping_end - overlapping_start).days + 1)
+                overlapping_amount = budget.daily_amount() * ((overlapping_end - overlapping_start).days + 1)
                 total_amount += overlapping_amount
             cur_date = cur_date + monthdelta(1)
 
         return total_amount
-
-    def daily_amount(self, budget):
-        return budget.amount / budget.days()
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
