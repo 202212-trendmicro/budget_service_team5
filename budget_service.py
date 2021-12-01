@@ -31,24 +31,21 @@ class BudgetService:
             return self.query_same_month_range(start, end, budgets)
 
         cur_date = start
-        interval_month_budget = 0
+        total_amount = 0
         while cur_date < date(end.year, end.month, 1) + monthdelta(1):
             current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
             matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
             if len(matched_budgets) > 0:
                 budget = matched_budgets[0]
                 if budget.year_month == start.strftime("%Y%m"):
-                    interval_month_budget += self.query_same_month_range(start, start_end_date, budgets)
+                    total_amount += self.query_same_month_range(start, start_end_date, budgets)
                 elif budget.year_month == end.strftime("%Y%m"):
-                    interval_month_budget += self.query_same_month_range(end_start_date, end, budgets)
+                    total_amount += self.query_same_month_range(end_start_date, end, budgets)
                 else:
-                    interval_month_budget += self.query_same_month_range(budget.first_day(), budget.last_day(), budgets)
+                    total_amount += self.query_same_month_range(budget.first_day(), budget.last_day(), budgets)
             cur_date = cur_date + monthdelta(1)
 
-        # end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
-
-        return interval_month_budget
-        # return interval_month_budget + end_date_budget
+        return total_amount
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
