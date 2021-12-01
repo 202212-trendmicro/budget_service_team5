@@ -33,14 +33,11 @@ class BudgetService:
             if len(matched_budgets) > 0:
                 budget = matched_budgets[0]
                 period = Period(start, end)
-                overlapping_amount = self.overlapping_amount(budget, period)
+                overlapping_amount = budget.overlapping_amount(period)
                 total_amount += overlapping_amount
             cur_date = cur_date + monthdelta(1)
 
         return total_amount
-
-    def overlapping_amount(self, budget, period):
-        return budget.daily_amount() * period.get_overlapping_days(budget.create_period())
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
