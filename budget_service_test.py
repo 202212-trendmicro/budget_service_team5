@@ -74,5 +74,13 @@ class BudgetServiceTests(unittest.TestCase):
         result = self.b.query(start_date, end_date)
         self.assertEqual(1 + 2 * 3, result)
 
+    def test_period_no_overlapping_budget(self):
+        self.mock_budget = [Budget('202005', 31), Budget('202007', 93)]
+        self.b.get_all = self.fake_budgets
+        start_date = date(2020, 4, 29)
+        end_date = date(2020, 4, 30)
+        result = self.b.query(start_date, end_date)
+        self.assertEqual(0, result)
+
     def fake_budgets(self):
         return self.mock_budget
