@@ -3,11 +3,14 @@
 # by天的預算 金額是int
 # 假設一個月 三十萬 查詢一天 回傳一萬
 # 輸入查詢日期(date) 回傳預算
+import datetime
+from datetime import date
+from time import strftime
 from typing import List
 
 from monthdelta import monthdelta
-from datetime import date
-import datetime
+# from datetime import date
+# import datetime
 from calendar import monthrange
 
 from budget import Budget
@@ -27,22 +30,26 @@ class BudgetService:
         if start.year == end.year and start.month == end.month:
             return self.query_same_month_range(start, end, budgets)
 
-        start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
+        # start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
 
-        cur_date = start + monthdelta(1)
+        cur_date = start
+        # cur_date = start + monthdelta(1)
         interval_month_budget = 0
         while cur_date < date(end.year, end.month, 1):
             current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
             matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
             if len(matched_budgets) > 0:
                 budget = matched_budgets[0]
-                interval_month_budget += self.query_same_month_range(budget.first_day(), budget.last_day(), budgets)
-                # interval_month_budget += budget.amount
+                if budget.year_month == start.strftime("%Y%m"):
+                    interval_month_budget += self.query_same_month_range(start, start_end_date, budgets)
+                else:
+                    interval_month_budget += self.query_same_month_range(budget.first_day(), budget.last_day(), budgets)
             cur_date = cur_date + monthdelta(1)
 
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
-        return start_month_budget + interval_month_budget + end_date_budget
+        return interval_month_budget + end_date_budget
+        # return start_month_budget + interval_month_budget + end_date_budget
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
