@@ -30,15 +30,15 @@ class BudgetService:
         start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
 
         cur_date = start + monthdelta(1)
-        total = 0
+        interval_month_budget = 0
         while cur_date < date(end.year, end.month, 1):
             current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
             matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
             if len(matched_budgets) > 0:
-                total += matched_budgets[0].amount
+                interval_month_budget += matched_budgets[0].amount
             cur_date = cur_date + monthdelta(1)
 
-        interval_month_budget = total
+        # interval_month_budget = interval_month_budget
 
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
