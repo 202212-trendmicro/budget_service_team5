@@ -17,19 +17,19 @@ class BudgetService:
     def __init__(self) -> None:
         self.current_v = 0
 
-    def query(self, start_date, end_date) -> float:
+    def query(self, start, end) -> float:
         budgets = self.get_all()
-        if end_date < start_date:
+        if end < start:
             return 0
-        start_end_date = date(start_date.year, start_date.month + 1, 1) - datetime.timedelta(days=1)
-        end_start_date = date(end_date.year, end_date.month, 1)
+        start_end_date = date(start.year, start.month + 1, 1) - datetime.timedelta(days=1)
+        end_start_date = date(end.year, end.month, 1)
 
-        if start_date.year == end_date.year and start_date.month == end_date.month:
-            return self.query_same_month_range(start_date, end_date, budgets)
+        if start.year == end.year and start.month == end.month:
+            return self.query_same_month_range(start, end, budgets)
 
-        start_month_budget = self.query_same_month_range(start_date, start_end_date, budgets)
-        interval_month_budget = self.get_interval_months(start_date, end_date, budgets)
-        end_date_budget = self.query_same_month_range(end_start_date, end_date, budgets)
+        start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
+        interval_month_budget = self.get_interval_months(start, end, budgets)
+        end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
         return start_month_budget + interval_month_budget + end_date_budget
 
