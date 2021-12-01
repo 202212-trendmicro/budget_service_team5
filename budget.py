@@ -13,3 +13,6 @@ class Budget:
     def last_day(self):
         days_in_month = calendar.monthrange(self.first_day().year, self.first_day().month)[1]
         return date(self.first_day().year, self.first_day().month, days_in_month)
+
+    def days(self):
+        return calendar.monthrange(self.first_day().year, self.first_day().month)[1]
