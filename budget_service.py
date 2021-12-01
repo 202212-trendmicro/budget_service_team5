@@ -3,19 +3,13 @@
 # by天的預算 金額是int
 # 假設一個月 三十萬 查詢一天 回傳一萬
 # 輸入查詢日期(date) 回傳預算
-from datetime import date
 from typing import List
-
-from monthdelta import monthdelta
 
 from budget import Budget
 from period import Period
 
 
 class BudgetService:
-    def __init__(self) -> None:
-        self.current_v = 0
-
     def query(self, start, end) -> float:
         period = Period(start, end)
         return sum(budget.overlapping_amount(period) for budget in (self.get_all()))
