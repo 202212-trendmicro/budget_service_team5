@@ -6,6 +6,7 @@ class Period:
         self.start = start
 
     def get_overlapping_days(self, budget):
+        another = Period(budget.first_day(), budget.last_day())
         first_day = budget.first_day()
         last_day = budget.last_day()
         overlapping_start = self.start if self.start > first_day else first_day
