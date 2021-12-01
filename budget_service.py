@@ -30,10 +30,7 @@ class BudgetService:
         if start.year == end.year and start.month == end.month:
             return self.query_same_month_range(start, end, budgets)
 
-        # start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
-
         cur_date = start
-        # cur_date = start + monthdelta(1)
         interval_month_budget = 0
         while cur_date < date(end.year, end.month, 1):
             current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
@@ -49,23 +46,19 @@ class BudgetService:
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
 
         return interval_month_budget + end_date_budget
-        # return start_month_budget + interval_month_budget + end_date_budget
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
         for budget in budgets:
-            # print(f'key: {budget.year_month}, value: {budget.amount}')
             year = str(start_date)[:4]
             month = str(start_date)[5:7]
             days = monthrange(int(year), int(month))[1]
-            # print('Number of days: {}'.format(days))
             if year == budget.year_month[:4] and month == budget.year_month[4:6]:
                 self.current_v = budget.amount
             # get month budget
         diff = (end_date - start_date).days
         if days < 0 or diff < 0:
             return 0
-        # print(f"diff: {diff}")
         result = (diff + 1) * self.current_v // days
         return result
 
