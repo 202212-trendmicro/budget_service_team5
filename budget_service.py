@@ -20,20 +20,11 @@ class BudgetService:
         if end < start:
             return 0
 
-        # cur_date = start
         total_amount = 0
         period = Period(start, end)
         budgets = self.get_all()
         for budget in budgets:
             total_amount += budget.overlapping_amount(period)
-
-        # while cur_date < date(end.year, end.month, 1) + monthdelta(1):
-        #     current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
-        #     matched_budgets = list(filter(lambda x: x.year_month == current_year_month, budgets))
-        #     if len(matched_budgets) > 0:
-        #         budget = matched_budgets[0]
-        #         total_amount += budget.overlapping_amount(period)
-        #     cur_date = cur_date + monthdelta(1)
 
         return total_amount
 
