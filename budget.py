@@ -1,6 +1,8 @@
 import calendar
 from datetime import datetime, date
 
+from period import Period
+
 
 class Budget:
     def __init__(self, year_month, amount):
@@ -19,3 +21,5 @@ class Budget:
 
     def daily_amount(self):
         return self.amount / self.days()
+    def create_period(self):
+        return Period(self.first_day(), self.last_day())
