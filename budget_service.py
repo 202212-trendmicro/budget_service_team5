@@ -29,18 +29,24 @@ class BudgetService:
 
         start_month_budget = self.query_same_month_range(start, start_end_date, budgets)
 
-        keys = []
-        cur_date = start + monthdelta(1)
+        # keys = []
         lookup = {}
         for b in budgets:
             lookup[b.year_month] = b.amount
-        while cur_date < date(end.year, end.month, 1):
-            keys.append(str(cur_date)[0:4] + str(cur_date)[5:7])
-            cur_date = cur_date + monthdelta(1)
+
+        cur_date = start + monthdelta(1)
         total = 0
-        for x in keys:
-            if x in lookup:
-                total += lookup[x]
+        while cur_date < date(end.year, end.month, 1):
+            current_year_month = str(cur_date)[0:4] + str(cur_date)[5:7]
+            if current_year_month in lookup:
+                total += lookup[current_year_month]
+
+            # keys.append(current_year_month)
+            cur_date = cur_date + monthdelta(1)
+
+        # for x in keys:
+        #     if x in lookup:
+        #         total += lookup[x]
         interval_month_budget = total
 
         end_date_budget = self.query_same_month_range(end_start_date, end, budgets)
