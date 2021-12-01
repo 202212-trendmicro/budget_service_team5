@@ -8,6 +8,8 @@ class Period:
     def get_overlapping_days(self, another):
         if self.end < another.start or self.start > another.end:
             return 0
+        if self.end < self.start:
+            return 0
         overlapping_start = self.start if self.start > another.start else another.start
         overlapping_end = self.end if self.end < another.end else another.end
         return (overlapping_end - overlapping_start).days + 1

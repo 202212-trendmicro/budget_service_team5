@@ -17,9 +17,6 @@ class BudgetService:
         self.current_v = 0
 
     def query(self, start, end) -> float:
-        if end < start:
-            return 0
-
         period = Period(start, end)
         return sum(budget.overlapping_amount(period) for budget in (self.get_all()))
 
