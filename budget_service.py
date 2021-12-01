@@ -55,8 +55,7 @@ class BudgetService:
     def get_overlapping_days(self, budget, period):
         overlapping_start = period.start if period.start > budget.first_day() else budget.first_day()
         overlapping_end = period.end if period.end < budget.last_day() else budget.last_day()
-        overlapping_days = ((overlapping_end - overlapping_start).days + 1)
-        return overlapping_days
+        return (overlapping_end - overlapping_start).days + 1
 
     def query_same_month_range(self, start_date, end_date, budgets):
         days = -1
