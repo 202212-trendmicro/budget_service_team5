@@ -72,7 +72,7 @@ class BudgetServiceTests(unittest.TestCase):
         start_date = date(2020, 5, 31)
         end_date = date(2020, 7, 2)
         result = self.b.query(start_date, end_date)
-        self.assertEqual(result, 1 + 2 * 3)
+        self.assertEqual(1 + 2 * 3, result)
 
     def fake_budgets(self):
         return self.mock_budget
